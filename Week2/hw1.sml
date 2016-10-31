@@ -1,4 +1,3 @@
-
 (* This function takes two dates and evaluates to true or false. 
    It evaluates to true if the first argument is a date that comes before the second argument. *)
 fun is_older (date1: int * int * int, date2: int * int * int) = 
@@ -18,10 +17,40 @@ fun number_in_month (date: (int * int * int) list, month: int) =
   then 1 + number_in_month((tl date), month)
   else number_in_month((tl date), month)
 
-(* takes a list of dates and a list of months (i.e., an int list) and returns the number of dates in the list of dates that are in any of the months in the list of months.
+(* This function takes a list of dates and a list of months (i.e., an int list) and returns the number of dates in the list of dates that are in any of the months in the list of months.
    Assume the list of months has no number repeated. *)
 fun number_in_months (date: (int * int * int) list, month: int list) =
-  if null month
+  if null month orelse null date
   then 0
   else number_in_month (date, hd month) + number_in_months(date, tl month)
 
+(* This function takes a list of dates and a month (i.e., an int) and returns a list holding the dates from the argument list of dates that are in the month.
+   The returned list should contain dates in the order they were originally given. *)
+fun dates_in_month (date: (int *int * int) list, month: int) = 
+  if null date
+  then []
+  else if #2(hd date) = month
+  then hd date::dates_in_month(tl date, month)
+  else dates_in_month(tl date, month)
+
+(* This functiion takes a list of dates and a list of months (i.e., an int list) and returns a list holding the dates from the argument list of dates that are in any of the months in the list of months. 
+Assume the list of months has no number repeated. *)
+fun dates_in_months (date: (int * int * int) list, month: int list) = 
+  if null month orelse null date
+  then []
+  else dates_in_month(date, hd month) @ dates_in_months(date, tl month)
+
+(* This function takes a list of strings and an int n and returns the nth element of the list where the head of the list is 1st *)
+fun get_nth (s: string list, n: int) = 
+  if null s
+  then NONE
+  else if n = 1
+  then SOME(hd s)
+  else get_nth(tl s, n-1)
+
+(* This function takes a date and returns a string *)
+fun date_to_string (date: int * int * int) = 
+  let val month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      val day_year = Int.toString(#3 date) ^ (", ") ^ Int.toString(#1 date)
+  in valOf(get_nth(month, #2 date)) ^ (" ") ^ day_year
+  end
