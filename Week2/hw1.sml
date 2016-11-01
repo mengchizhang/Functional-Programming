@@ -54,3 +54,17 @@ fun date_to_string (date: int * int * int) =
       val day_year = Int.toString(#3 date) ^ (", ") ^ Int.toString(#1 date)
   in valOf(get_nth(month, #2 date)) ^ (" ") ^ day_year
   end
+
+(* This function takes an int called sum, which you can assume is positive, and an int list, which you can assume contains all positive numbers, and returns an int. It will return an int n such that the first n elements of the list add to less than sum, but the first n + 1 elements of the list add to sum or more. 
+   Assume the entire list sums to more than the passed in value *)
+fun number_before_reaching_sum (sum: int, l: int list) =
+  let val hd_sum = 0
+      fun list_sum (hdsum: int, xl: int list) = 
+	 if hdsum >= sum
+	 then 0
+	 else 1 + list_sum (hdsum + hd xl, tl xl)
+  in list_sum (hd_sum + hd l, tl l)
+  end
+
+
+
