@@ -66,5 +66,31 @@ fun number_before_reaching_sum (sum: int, l: int list) =
   in list_sum (hd_sum + hd l, tl l)
   end
 
+(* This function takes a day of year (i.e., an int between 1 and 365) and returns what month that day is in (1 for January, 2 for February, etc.). *)
+fun what_month (day: int) =
+  let val days = [31,28,31,30,31,30,31,31,30,31,30,31]
+  in 1 + number_before_reaching_sum (day, days)
+  end
+
+(* This function takes two days of the year day1 and day2 and returns an int list [m1,m2,...,mn] where m1 is the month of day1, m2 is the month of day1+1, ..., and mn is the month of day day2. *)
+fun month_range (day1: int, day2: int) = 
+  if day1 > day2
+  then []
+  else what_month(day1)::month_range(day1+1,day2)
 
 
+(* This function takes a list of dates and evaluates to an (int*int*int) option. 
+   It evaluates to NONE if the list has no dates and SOME d if the date d is the oldest date in the list. *)
+fun oldest (date: (int * int * int) list) =
+  if null date
+  then NONE
+  else let fun oldest_nonempty (date: (int * int * int) list) =
+	     if null (tl date)
+	     then hd date
+	     else let val oldest_tl = valOf(oldest (tl date))
+		  in if is_older (hd date, oldest_tl)
+		     then hd date
+		     else oldest_tl
+		  end
+       in SOME (oldest_nonempty date)
+       end
