@@ -115,7 +115,7 @@ fun oldest (date: (int * int * int) list) =
        in SOME (oldest_nonempty date)
        end
 
-(* Arguably better alternative *)
+(* Arguably Better Alternative *)
 fun oldest2 (dates : (int * int * int) list) =
     if null dates
     then NONE
