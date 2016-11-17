@@ -10,7 +10,7 @@ fun is_older (date1: int * int * int, date2: int * int * int) =
   else false
 
 (* Alternative *)
-fun is_older (date1 : int * int * int, date2 : int * int * int) =
+fun is_older2 (date1 : int * int * int, date2 : int * int * int) =
     let 
         val y1 = #1 date1
         val m1 = #2 date1
@@ -81,10 +81,10 @@ fun number_before_reaching_sum (sum: int, l: int list) =
   end
 
 (* Alternative *)
-fun number_before_reaching_sum (sum: int, l: int list) =
+fun number_before_reaching_sum2 (sum: int, l: int list) =
   if hd l >= sum
   then 0
-  else 1 + number_before_reaching_sum (sum - hd l, tl l)
+  else 1 + number_before_reaching_sum2 (sum - hd l, tl l)
 
 (* This function takes a day of year (i.e., an int between 1 and 365) and returns what month that day is in (1 for January, 2 for February, etc.). *)
 fun what_month (day: int) =
@@ -114,3 +114,21 @@ fun oldest (date: (int * int * int) list) =
 		  end
        in SOME (oldest_nonempty date)
        end
+
+(* Arguably better alternative *)
+fun oldest2 (dates : (int * int * int) list) =
+    if null dates
+    then NONE
+    else let fun f dates =
+	       if null (tl dates)
+	       then hd dates
+	       else 
+		   let  val ans = f (tl dates)
+		   in 
+		       if is_older(ans, hd dates)
+		       then ans
+		       else hd dates
+		   end
+	 in 
+             SOME(f dates) 
+	 end
