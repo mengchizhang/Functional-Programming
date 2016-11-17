@@ -72,13 +72,19 @@ fun date_to_string (date: int * int * int) =
 (* This function takes an int called sum, which you can assume is positive, and an int list, which you can assume contains all positive numbers, and returns an int. It will return an int n such that the first n elements of the list add to less than sum, but the first n + 1 elements of the list add to sum or more. 
    Assume the entire list sums to more than the passed in value *)
 fun number_before_reaching_sum (sum: int, l: int list) =
-  let val hd_sum = 0
+  let
       fun list_sum (hdsum: int, xl: int list) = 
 	 if hdsum >= sum
 	 then 0
 	 else 1 + list_sum (hdsum + hd xl, tl xl)
-  in list_sum (hd_sum + hd l, tl l)
+  in list_sum (hd l, tl l)
   end
+
+(* Alternative *)
+fun number_before_reaching_sum (sum: int, l: int list) =
+  if hd l >= sum
+  then 0
+  else 1 + number_before_reaching_sum (sum - hd l, tl l)
 
 (* This function takes a day of year (i.e., an int between 1 and 365) and returns what month that day is in (1 for January, 2 for February, etc.). *)
 fun what_month (day: int) =
