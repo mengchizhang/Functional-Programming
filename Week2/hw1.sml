@@ -123,7 +123,7 @@ fun oldest2 (dates : (int * int * int) list) =
 	       if null (tl dates)
 	       then hd dates
 	       else 
-		   let  val ans = f (tl dates)
+		   let val ans = f (tl dates)
 		   in 
 		       if is_older(ans, hd dates)
 		       then ans
